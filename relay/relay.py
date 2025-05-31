@@ -12,11 +12,11 @@ import time
 class RelayPublisher(Node):
     def __init__(self):
         super().__init__("relay_publisher")
-        #self.relay_pin = 17
+        self.relay_pin = 12
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
-        GPIO.setup(12, GPIO.OUT)
-        GPIO.output(12, GPIO.HIGH)
+        GPIO.setup(self.relay_pin, GPIO.OUT)
+        GPIO.output(self.relay_pin , GPIO.LOW)
 
         self.sub_ = self.create_subscription(String, "relay", self.msgCallback, 10)#siren is the topic
         self.sub_
@@ -26,10 +26,10 @@ class RelayPublisher(Node):
         x = int(msg.data.encode("utf-8"))
         if x == 0:
             self.get_logger().info("New message 0")
-            GPIO.output(12, GPIO.LOW)
+            GPIO.output(self.relay_pin, GPIO.LOW)
         elif x == 1:
             self.get_logger().info("New message 1")
-            GPIO.output(12, GPIO.HIGH)
+            GPIO.output(self.relay_pin, GPIO.HIGH)
         else:
             self.get_logger().info("New message ")
 
